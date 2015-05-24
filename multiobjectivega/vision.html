@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vision</title>
+	<meta charset="utf-8">
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<style type="text/css"></style>
+</head>
+<script type="text/javascript" src="external/jquery-1.11.3.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+var vision;
+vision = new Array (20)
+function func() {
+	for (i=0; i<20; i++) {
+	vision[i] = Math.pow(i, 2)	
+	console.log(vision);
+	}
+}
+func();
+
+$(function () {
+    $('#container').highcharts({
+        chart: {},
+
+        plotOptions: {
+            series: {
+                allowPointSelect: true
+            }
+        },
+
+        series: [{
+            data: vision
+        }]
+    });
+});
+
+</script>
+<body>
+	<div id="container" style="height: 400px"></div>
+</body>
+</html>
