@@ -1,8 +1,6 @@
-//алгоритм vega
+//алгоритм rwga
 
-//vega();
-
-function vega() {
+function rwga() {	
 	
 	var mins, maxs, minv, maxv, minl, maxl, mind, maxd, mind0, maxd0, a;
 		
@@ -20,18 +18,11 @@ function vega() {
 	
 //сгенерировать случайную популяцию
 
-	//var length, sublength, limit, mutate;
-	var sublength;
 	var inds, indv, indl, indd, indd0;
-	
-	/*length = document.getElementById("populationSize").value;
+		
+	length = document.getElementById("populationSize").value;
 	limit = document.getElementById("iterationLimit").value;  
-	mutate = document.getElementById("mutationProbability").value;*/
-	
-	//length = 100;
-	sublength = length/2;
-	//limit = 1000;
-	//mutate = 0.5;
+	mutate = document.getElementById("mutationProbability").value;
 	
 	inds= new Array(length);
 	indv= new Array(length);
@@ -47,86 +38,45 @@ function vega() {
 		indd[i] = Math.random() * (maxd - mind) +mind;
 		indd0[i] = Math.random() * (maxd0 - mind0) +mind0;
 		
-		//document.write(inds[i]+'\n');
     }
 	
 //цикл
 	
 	for (count = 0; count < limit; count++) {
 
-//разбить популяцию на две субпопуляции
+//вычислить случайные весовые коэфициенты
 
-	/*var w1, w2;
+	var w1, w2;
 	w1 = Math.random();
-	w2 = 1 - w1;*/
+	w2 = 1 - w1;
 	
-	//document.write('rand '+w1+' '+w2+' ');
-	
-//вычислить фитнес-функции для каждого критерия оптимизации
+//вычислить фитнес-функцию для каждого решения
 
-	var fitness, fitness1, fitness2, sum1=0, sum2=0;
+	var fitness, sum=0;
 	fitness = new Array(length);
-	fitness1 = new Array(sublength);
-	fitness2 = new Array(sublength);
 
-	//document.write(' fitness ');
 	
-	for (i = 0; i < sublength; i++) {
-		fitness[i] = Math.sqrt(Math.pow(indd0[i],2)+a*((Math.PI*indd[i]*indl[i])/(inds[i]*indv[i])));
-		sum1+=fitness[i];
+	for (i = 0; i < length; i++) {
+		fitness[i] = w1*(Math.sqrt(Math.pow(indd0[i],2)+a*((Math.PI*indd[i]*indl[i])/(inds[i]*indv[i])))) + w2*(1/(inds[i]*indv[i]));
+		sum+=fitness[i];
 		
-		//document.write(fitness[i]+'\n');		
 	}
 	
-	for (i = sublength; i < length; i++) {	
-		fitness[i] = 1/(inds[i]*indv[i]);
-		sum2+=fitness[i];
-		
-		
-	}
-		
-	var minfit1, minfit2, maxfit1, maxfit2, avgfit1, avgfit2;
+	var minfit, maxfit, avgfit;
+	minfit = Math.min.apply(null, fitness);
+	maxfit = Math.max.apply(null, fitness);
+	avgfit = sum/length;
 	
-	fitness1 = fitness.slice(0, sublength);
-	fitness2 = fitness.slice(sublength, length);
+	min1[count] = minfit;
 	
-	minfit1 = Math.min.apply(null, fitness1);
-	minfit2 = Math.min.apply(null, fitness2);
-	
-	//maxfit1 = Math.max.apply(null, fitness1);
-	//maxfit2 = Math.max.apply(null, fitness2);
+	average1[count] = avgfit;
 
-	avgfit1 = sum1/sublength;
-	avgfit2 = sum2/sublength;
-	
-	min1[count] = minfit1;
-	min2[count] = minfit2;
-	
-	average1[count] = avgfit1;
-	average2[count] = avgfit2;
-	
-	//console.log(average1);
-	
-	//вывод результатов
-	
-	//document.write('minfit1: '+minfit1+' minfit2: '+minfit2+"<br>");
-	//document.write(' avgfit1: '+avgfit1+' avgfit2: '+avgfit2+"<br>");
-	
-	for (i = 0; i < sublength; i++) {
-		if (fitness[i] == minfit1) {
-			//document.write('s1: '+inds[i]+' v1: '+indv[i]+' l1: '+indl[i]+' d1: '+indd[i]+' d01: '+indd0[i]+"<br>");	
+	for (i = 0; i < length; i++) {
+		if (fitness[i] == minfit) {
 			rs1 = inds[i]; rv1 = indv[i]; rl1 = indl[i]; rd1 = indd[i]; rd01 = indd0[i];
 			break;
 		}			
 	}
-	for (i = sublength; i < length; i++) {
-		if (fitness[i] == minfit2) {
-			//document.write('s2: '+inds[i]+' v2: '+indv[i]+' l2: '+indl[i]+' d2: '+indd[i]+' d02: '+indd0[i]+"<br>");	
-			rs2 = inds[i]; rv2 = indv[i]; rl2 = indl[i]; rd2 = indd[i]; rd02 = indd0[i];
-			break;
-		}			
-	}
-
 
 //выбрать особи для скрещивания, кроссовер, мутация
 
@@ -141,21 +91,17 @@ for (i = 0; i < length; i += 2) {
 	
 	var rand1, rand2, mom, dad, factor;
 	
-	//турнирный отбор, отдельно для каждой субпопуляции
-	
-	rand1 = Math.floor(Math.random() * (sublength));
-	rand2 = Math.floor(Math.random() * (sublength));
+	rand1 = Math.floor(Math.random() * (length));
+	rand2 = Math.floor(Math.random() * (length));
 
-	//document.write(' r1 '+rand1+' r2 '+rand2+' ');
-	
 	if (fitness[rand1]<fitness[rand2]) mom = rand1; else mom = rand2;
 	
-	rand1 = Math.floor(Math.random() * (length-sublength)) + sublength;
-	rand2 = Math.floor(Math.random() * (length-sublength)) + sublength;
+	rand1 = Math.floor(Math.random() * (length));
+	rand2 = Math.floor(Math.random() * (length));
 	
 	if (fitness[rand1]<fitness[rand2]) dad = rand1; else dad = rand2;
 	
-	//линейный кроссовер общий
+	//линейный кроссовер
 	
 	factor = Math.random();
 	
@@ -170,15 +116,11 @@ for (i = 0; i < length; i += 2) {
 	offspringl[i+1] = factor*indl[dad] + (1 - factor)*indl[mom];
 	offspringd[i+1] = factor*indd[dad] + (1 - factor)*indd[mom];
 	offspringd0[i+1] = factor*indd0[dad] + (1 - factor)*indd0[mom];
-	
-	//document.write('  '+offsprings[i]+'  '+offsprings[i+1]+'\n');
-	
-		
-	
+				
 }
 	//мутация?
 
-	var  m1;	
+	var m1;	
 	
 	for (i = 0; i < length; i++) {	
 	m1 = Math.random();	
@@ -211,8 +153,6 @@ for (i = 0; i < length; i += 2) {
 	if (offspringd0[i] > maxd0) offspringd0[i] = maxd0; else if (offspringd0[i] < mind0) offspringd0[i] = mind0;	
 	}
 
-
-
 //замена старой популяции на новую
 	
 	for (i = 0; i < length; i++) {
@@ -227,8 +167,6 @@ for (i = 0; i < length; i += 2) {
 				
 	}
 
-
 }
-
 
 }

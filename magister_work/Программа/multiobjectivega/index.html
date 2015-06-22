@@ -7,7 +7,6 @@
 	<style type="text/css"></style>
 </head>
 
-<!--script type="text/javascript" src="genetic.js"></script-->
 <script type="text/javascript" src="external/jquery-1.11.3.js"></script>
 <!--script type="text/javascript" src="external/highcharts.js"></script-->
 <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -65,11 +64,11 @@ function Optimize() {
 	min1 = [];
 	min2 = [];
 	
-	coordinate1_div.innerHTML = 's1: '+rs1+' v1: '+rv1+' l1: '+rl1+' d1: '+rd1+' d01: '+rd01+"<br>";
+	coordinate1_div.innerHTML = "<b><i>s</i></b> = "+rs1+"<b><i> v</i></b> = "+rv1+"<b><i> L</i></b> = "+rl1+"<b><i> d</i></b> = "+rd1+"<b><i> D<small>0</small></i></b> = "+rd01+"<br>";
 	if (document.getElementById("algo1").checked == true)
 	coordinate2_div.innerHTML = 'В методе RWGA одна целевая функция, составленная из двух  с присвоением случайных весов';
 	else
-	coordinate2_div.innerHTML = 's1: '+rs2+' v1: '+rv2+' l1: '+rl2+' d1: '+rd2+' d01: '+rd02+"<br>";
+	coordinate2_div.innerHTML = "<b><i>s</i></b> = "+rs2+"<b><i> v</i></b> = "+rv2+"<b><i> L</i></b> = "+rl2+"<b><i> d</i></b> = "+rd2+"<b><i> D<small>0</small></i></b> = "+rd02+"<br>";
 
 }
 
@@ -99,10 +98,6 @@ function Optimize() {
 				<label for="mutationProbability">Вероятность мутации:</label>
 				<input type="text" name="mutationProbability" id="mutationProbability" value="0.5"/><br />
 			</div>
-			<!--div class="field">
-				<label for="statusCallbackInterval">Шаг вывода результата:</label>
-				<input type="text" name="statusCallbackInterval" id="statusCallbackInterval" value="10"/><br />
-			</div-->
 			<br/>
 		</tr>
 		<tr>
@@ -135,7 +130,6 @@ function Optimize() {
 		</div>
 		<table>
 			<tr>
-				<!--td style="width: 60%;"> Минимальное значение функции: <div style="color: #437ad1; font-size: 19px;" id="result_div"> ?</div> <br/> </td-->
 				<td> Значения переменных для первой функции в точке минимума:   <div style="color: #437ad1; font-size: 19px;" id="coordinate1_div">?</div> </td>
 			</tr>
 				<td> Значения переменных для второй функции в точке минимума:   <div style="color: #437ad1; font-size: 19px;" id="coordinate2_div">?</div> </td>

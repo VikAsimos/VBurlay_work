@@ -1,7 +1,5 @@
 //алгоритм npga
 
-//npga();
-
 function npga() {
 	
 	var mins, maxs, minv, maxv, minl, maxl, mind, maxd, mind0, maxd0, a;
@@ -20,16 +18,7 @@ function npga() {
 	
 //сгенерировать случайную популяцию
 
-	//var length, limit, mutate;
 	var inds, indv, indl, indd, indd0;
-	
-	/*length = readlength;
-	limit = readlimit;
-	mutate = readmutate;*/
-	
-	/*length = 100;
-	limit = 1000;
-	mutate = 0.5;*/
 	
 	inds= new Array(length);
 	indv= new Array(length);
@@ -37,7 +26,6 @@ function npga() {
 	indd= new Array(length);
 	indd0= new Array(length);
 	
-
 	for (i = 0; i < length; i++) {
         inds[i] = Math.random() * (maxs - mins) +mins;  //minmax
 		indv[i] = Math.random() * (maxv - minv) +minv;
@@ -45,34 +33,28 @@ function npga() {
 		indd[i] = Math.random() * (maxd - mind) +mind;
 		indd0[i] = Math.random() * (maxd0 - mind0) +mind0;
 		
-		//document.write(inds[i]+'\n');
     }
 	
 //цикл
 	
 	for (count = 0; count < limit; count++) {
 
-
 //вычислить фитнес-функции по каждому критерию для всей популяции:
 
 	var fitness1, fitness2, sum1=0, sum2=0;
 	fitness1 = new Array(length);
 	fitness2 = new Array(length);
-
-	//document.write(' fitness ');
 	
 	for (i = 0; i < length; i++) {
 		fitness1[i] = Math.sqrt(Math.pow(indd0[i],2)+a*((Math.PI*indd[i]*indl[i])/(inds[i]*indv[i])));
 		sum1+=fitness1[i];
-		
-		//document.write(fitness[i]+'\n');		
+			
 	}
 	
 	for (i = 0; i < length; i++) {	
 		fitness2[i] = 1/(inds[i]*indv[i]);
 		sum2+=fitness2[i];
-		
-		
+				
 	}
 		
 	var minfit1, minfit2, maxfit1, maxfit2, avgfit1, avgfit2;
@@ -81,9 +63,6 @@ function npga() {
 	minfit1 = Math.min.apply(null, fitness1);
 	minfit2 = Math.min.apply(null, fitness2);
 	
-	//maxfit1 = Math.max.apply(null, fitness1);
-	//maxfit2 = Math.max.apply(null, fitness2);
-
 	avgfit1 = sum1/length;
 	avgfit2 = sum2/length;
 	
@@ -93,60 +72,18 @@ function npga() {
 	average1[count] = avgfit1;
 	average2[count] = avgfit2;
 		
-	//document.write('minfit: '+minfit+' maxfit: '+maxfit+' avgfit: '+avgfit+"<br>");
-	//document.write('minfit1: '+minfit1+' minfit2: '+minfit2+"<br>");
-	//document.write(' avgfit1: '+avgfit1+' avgfit2: '+avgfit2+"<br>");
-	
 	for (i = 0; i < length; i++) {
 		if (fitness1[i] == minfit1) {
-			//document.write('s1: '+inds[i]+' v1: '+indv[i]+' l1: '+indl[i]+' d1: '+indd[i]+' d01: '+indd0[i]+"<br>");	
 			rs1 = inds[i]; rv1 = indv[i]; rl1 = indl[i]; rd1 = indd[i]; rd01 = indd0[i];
 			break;
 		}			
 	}
 	for (i = 0; i < length; i++) {
 		if (fitness2[i] == minfit2) {
-			//document.write('s2: '+inds[i]+' v2: '+indv[i]+' l2: '+indl[i]+' d2: '+indd[i]+' d02: '+indd0[i]+"<br>");	
 			rs2 = inds[i]; rv2 = indv[i]; rl2 = indl[i]; rd2 = indd[i]; rd02 = indd0[i];
 			break;
 		}			
 	}
-
-	
-//ранжирование популяции
-
-	//случайное подмножество
-
-
-	/*var rank;
-	rank = new Array(length);
-	//rank.fill(0);
-
-	for (i = 0; i < length; i++) {
-		rank[i] = 0;
-		for (j = 0; j < length; j++) {
-			var firstwin = 0, secoundwin = 0;
-			if (fitness1[i] < fitness1[j]) firstwin = 1; else secoundwin = 1;
-			if (fitness2[i] < fitness2[j]) firstwin = 1; else secoundwin = 1;
-			
-			if ((firstwin == 0)&&(secoundwin ==1)) rank[i]++;			
-		}
-	}*/
-	
-	
-	/*rand1 = Math.floor(Math.random() * (length));
-	rand2 = Math.floor(Math.random() * (length));
-	var firstwin = 0, secoundwin = 0;
-	for (j = 0; j < length/10; i++) {
-		var subf = Math.floor(Math.random() * (length));
-		if ((fitness1[rand1] < fitness1[subf]) && (fitness2[rand1] < fitness2[subf]))	firstwin = 1; else firstwin = 0;
-		if ((fitness1[rand2] < fitness1[subf]) && (fitness2[rand2] < fitness2[subf]))	secoundwin = 1; else secoundwin = 0;
-	}
-	if ((firstwin == 1) && (seuoundwin == 0)) mom = rand1;
-	else if ((secoundwin == 1) && (firstwin == 0)) mom = rand2;
-	else mom = rand1;*/
-	
-	
 
 //выбрать особи для скрещивания, кроссовер, мутация
 
@@ -226,10 +163,6 @@ for (i = 0; i < length; i += 2) {
 	offspringd[i+1] = factor*indd[dad] + (1 - factor)*indd[mom];
 	offspringd0[i+1] = factor*indd0[dad] + (1 - factor)*indd0[mom];
 	
-	//document.write('  '+offsprings[i]+'  '+offsprings[i+1]+'\n');
-	
-		
-	
 }
 	//мутация?
 
@@ -275,13 +208,9 @@ for (i = 0; i < length; i += 2) {
 		indl[i] = offspringl[i];
 		indd[i] = offspringd[i];
 		indd0[i] = offspringd0[i];
-		
-		//document.write(inds[i]+'\n');
-				
+			
 	}
 
-
 }
-
 
 }
